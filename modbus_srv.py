@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # app for sending info from radiometr to local db
 
+# import sys
 import serial
-import sys
 import sqlite3
 import minimalmodbus # https://pypi.org/project/minimalmodbus/
 
