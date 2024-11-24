@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
+# app for sending info from radiometr to local db
 
-
-import minimalmodbus # https://pypi.org/project/minimalmodbus/
 import serial
 import sys
 import sqlite3
-
+import minimalmodbus # https://pypi.org/project/minimalmodbus/
 
 # modbus порт та десятковий адрес радіометра
-instrument = minimalmodbus.Instrument('/dev/pts/1',1, minimalmodbus.MODE_RTU)
+instrument = minimalmodbus.Instrument('/dev/pts/1', 1, minimalmodbus.MODE_RTU)
 
 # налаштування порта
 instrument.serial.baudrate = 9600  # Baud
@@ -41,14 +40,36 @@ cursor = connection.cursor()
 
 # Додаємо в таблицю значення регистрів
 
-cursor.execute('INSERT INTO host3_e (curent_amount_1, curent_amount_2, curent_amount_4, curent_amount_4,) VALUES (?, ?, ?, ?)',
-               (float(MIS1_reg[28]), float(MIS1_reg[30]), float(MIS1_reg[32]), float(MIS1_reg[34])))
+cursor.execute(
+    'INSERT INTO host3_e (curent_amount_1, curent_amount_2, curent_amount_4, curent_amount_4) VALUES (?, ?, ?, ?)',
+    (
+        float(MIS1_reg[28]),
+        float(MIS1_reg[30]),
+        float(MIS1_reg[32]),
+        float(MIS1_reg[34]),
+    )
+)
 
-cursor.execute('INSERT INTO host3_e (state_amount_1, state_amount_2, state_amount_4, state_amount_4,) VALUES (?, ?, ?, ?)',
-               (float(MIS1_reg[12]), float(MIS1_reg[14]), float(MIS1_reg[16]), float(MIS1_reg[18])))
+cursor.execute(
+    'INSERT INTO host3_e (state_amount_1, state_amount_2, state_amount_4, state_amount_4) VALUES (?, ?, ?, ?)',
+    (
+        float(MIS1_reg[12]),
+        float(MIS1_reg[14]),
+        float(MIS1_reg[16]),
+        float(MIS1_reg[18]),
+    )
+)
 
-cursor.execute('INSERT INTO host3_e (triger_1, triger_2, triger_3, triger_4,) VALUES (?, ?, ?, ?)',
-               (MIS1_reg[4] >> 5, MIS1_reg[4] >> 6, MIS1_reg[4] >> 7, MIS1_reg[4] >> 8))
+cursor.execute(
+    'INSERT INTO host3_e (triger_1, triger_2, triger_3, triger_4) VALUES (?, ?, ?, ?)',
+    (
+        MIS1_reg[4] >> 5,
+        MIS1_reg[4] >> 6,
+        MIS1_reg[4] >> 7,
+        MIS1_reg[4] >> 8,
+    )
+)
+
 
 connection.commit()
 connection.close()
